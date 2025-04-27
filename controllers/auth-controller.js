@@ -1,16 +1,14 @@
+import passport from 'passport'
 
 const login = async (req, res, next) => {
     res.render('login', { user: req.user });
 }
 
-const logout = async (req, res, next) => {
-    // handle with passport
-    res.send('logging out');
-}
-
-const logInGoogle = async (req, res, next) => {
-    // handle with passport
-    res.send('logging in with Google');
+const logoutControl = async (req, res) => {
+    req.logout(function(err) {
+        if (err) { return next(err); }
+        res.redirect('/');
+    })
 }
 
 const logInGithub = async (req, res, next) => {
@@ -20,7 +18,6 @@ const logInGithub = async (req, res, next) => {
 
 export {
     login,
-    logout,
-    logInGoogle,
+    logoutControl,
     logInGithub
 }
