@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link href="/public/style.css" rel="stylesheet" type="text/css">
+  <%- include('../partials/head'); %>
+</head>
+<body>
+<header>
+    <%- include('../partials/header'); %>
+</header>
+<form action="/products/editProduct/<%= id %>" method="POST" enctype="multipart/form-data">
+    <div>
+        <label for="prodName">Product Name:</label>
+        <input type="text" id="prodName" name="prodName" value="<%= prods.productName %>" required><br>
+        <label for="prodId">Product ID:</label>
+        <input type="text" id="prodId" value=<%= id %> readonly><br>
+        <label for="category">Choose a category:</label>
+        <select name="category" id="category">
+            <% cats.forEach(category => { %>
+                <option><%= category.categoryName %></option>
+            <% }) %>
+        </select><br>
+        <label for="prodCompany">Company:</label>
+        <input type="text" id="prodCompany" name="prodCompany" value="<%= prods.company %>" required><br>
+        <label for="prodDescription">Description:</label>
+        <input type="text" id="prodDescription" name="prodDescription" value="<%= prods.description %>" required><br>
+        <label for="prodImage">Product Thumbnail:</label>
+        <input type="file" name="prodImage" />
+        <label for="prodMss">MSS:</label>
+        <input type="file" name="prodMss" />
+    </div>
+    <div>
+        <button type="submit">Submit</button>
+    </div>
+</form>
+<footer>
+    <%- include('../partials/footer'); %>
+</footer>
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link href="/public/style.css" rel="stylesheet" type="text/css">
+  <%- include('../partials/head'); %>
+</head>
+<body>
+<header>
+    <%- include('../partials/header'); %>
+</header>
+<div>
+<form action="/products/newProduct" method="POST" enctype="multipart/form-data">
+    <div>
+        <label for="prodName">Product Name:</label>
+        <input type="text" id="prodName" name="prodName" required><br>
+        <label for="prodCompany">Company:</label>
+        <input type="text" id="prodCompany" name="prodCompany" required><br>
+        <label for="category">Choose a category:</label>
+        <select name="category" id="category">
+            <% cats.forEach(category => { %>
+                <option><%= category.categoryName %></option>
+            <% }) %>
+        </select><br>
+        <label for="prodDescription">Description:</label>
+        <input type="text" id="prodDescription" name="prodDescription" required><br>
+        <label for="prodImage">Product Thumbnail:</label>
+        <input type="file" name="prodImage" />
+        <label for="prodMss">MSS:</label>
+        <input type="file" name="prodMss" />
+    </div>
+    <div>
+        <button type="submit">Submit</button>
+    </div>
+</form>
+</div>
+<footer>
+    <%- include('../partials/footer'); %>
+</footer>
+</body>
+</html>

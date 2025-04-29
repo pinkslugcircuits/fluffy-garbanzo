@@ -1,0 +1,23 @@
+services:
+  database:
+    container_name: openarchitecture-database
+    image: mongo:latest
+    ports:
+      - '27017:27017'
+    volumes:
+      - db-storage:/data/db
+    command: [--auth]
+
+  # site:
+  #   image: pinkslugcircuits/testrepo2
+  #   environment:
+  #     - .env
+  #   ports:
+  #     - '3001:3001'
+  #   depends_on:
+  #     - database
+  #   volumes:
+  #     - /home/aaron/gitprojects/fluffy-garbanzo:/usr/src/app
+
+volumes:
+  db-storage:

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link href="/public/style.css" rel="stylesheet" type="text/css">
+  <%- include('../partials/head'); %>
+</head>
+<body>
+<header>
+    <%- include('../partials/header'); %>
+</header>
+
+<div class="container">
+  <div class="topBar">
+    <P>Categories</p>
+  </div>
+  <div class="grids">
+      <% cats.forEach(category => { %>
+          <div class="grid-item">
+            <a href="/categories/<%= category.id %>" style="text-decoration: none; color: black; font-family: Arial; font-weight: bold;" ><%= category.categoryName %></a><br>
+            <a href='/categories/editCategory/<%= category.id %>'>
+              <img class="logo" src="../../public/ICON_EDIT.png" style="width:20px;height:20px;">
+            </a>
+            <a href='/categories/deleteCategory/<%= category.id %>'>
+              <img class="logo" src="../../public/ICON_DELETE.png" style="width:20px;height:20px;">
+            </a><br>
+            <a href="/categories/<%= category.id %>">
+              <center><img src='../<%= category.imagePath %>' style="width:150px;height:150px"></center>
+            </a>
+          </div>
+      <% }) %>
+      <div class="grid-item">
+        <h2>Create new category</h2>
+        <a href='/categories/newCategory'>Create new category</a>
+    </div>
+  </div>
+</div>
+
+<footer>
+    <%- include('../partials/footer'); %>
+</footer>
+</body>
+</html>

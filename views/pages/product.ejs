@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link href="/public/style.css" rel="stylesheet" type="text/css">
+  <%- include('../partials/head'); %>
+</head>
+<body>
+<header>
+    <%- include('../partials/header'); %>
+</header>
+<div class="topBar">
+    <P><%= prod.productName %></p>
+</div>
+<div class="product-container">
+    <div class="product-image">
+        <center><img src='../<%= prod.imagePath %>' style="width:500px;height:500px"></center>
+    </div>
+    <div class="product-description">
+        Product: <%= prod.productName %><br>
+        <br>      
+        <nav>
+        <label for="SpecDrop"><span>Specifications</span></label>               
+        <input type="checkbox" id="SpecDrop" class="drop"> 
+        <ul class="slide">
+            <li>Company: <%= prod.company %></li> 
+            <li>Description: <%= prod.description %></li>
+        </ul>
+        </nav>
+        <nav>
+            <label for="SlaveryDrop"><span>Modern Slavery Statement</span></label>               
+            <input type="checkbox" id="SlaveryDrop" class="drop"> 
+            <ul class="slide">
+                <%= mss %><br>
+                <button type="submit" onclick="window.open('../<%= prod.mssPath %>')">Download MSS</button><br>
+            </ul>
+        </nav>
+        <nav>
+            <label for="supplyDrop"><span>Supply chain history</span></label>               
+            <input type="checkbox" id="supplyDrop" class="drop"> 
+            <ul class="slide">
+                <li><a href="#">Lorem Ipsum</a></li> 
+            </ul>
+        </nav>
+        <nav>
+            <label for="blockDrop"><span>Blockchain Information</span></label>               
+            <input type="checkbox" id="blockDrop" class="drop"> 
+            <ul class="slide">
+                <li><a href="#">Lorem Ipsum</a></li> 
+            </ul>
+        </nav>
+        <nav>
+            <label for="familyDrop"><span>BIM Family</span></label>               
+            <input type="checkbox" id="familyDrop" class="drop"> 
+            <ul class="slide">
+                <li><a href="#">Lorem Ipsum</a></li> 
+            </ul>
+        </nav>
+    </div>
+</div>
+<footer>
+    <%- include('../partials/footer'); %>
+</footer>
+</body>
+</html>

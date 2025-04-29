@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link href="/public/style.css" rel="stylesheet" type="text/css">
+  <%- include('../partials/head'); %>
+</head>
+<body>
+<header>
+    <%- include('../partials/header'); %>
+</header>
+
+<div class="container">
+  <div class="topBar">
+    <P><%= cats.categoryName %></p>
+  </div>
+  <div class="grids">
+      <% prods.forEach(product => { %>
+        <% if (product.categoryName === cats.categoryName) { %>
+          <div class="grid-item">
+            <a href="/products/<%= product.id %>" style="text-decoration: none; color: black; font-family: Arial; font-weight: bold;" ><%= product.productName %></a>
+            <a href='/products/editProduct/<%= product.id %>'>
+              <img class="logo" src="../../public/ICON_EDIT.png" style="width:20px;height:20px;">
+            </a>
+            <a href='/products/deleteProduct/<%= product.id %>'>
+              <img class="logo" src="../../public/ICON_DELETE.png" style="width:20px;height:20px;">
+            </a><br>
+            <a href="/products/<%= product.id %>">
+              <center><img src='../<%= product.imagePath %>' style="width:170px;height:170px"></center>
+            </a>
+          </div>
+        <% } %>
+      <% }) %>
+      <div class="grid-item">
+        <h2>Create new product</h2>
+        <a href='/products/newProduct'>Create new product</a>
+    </div>
+  </div>
+</div>
+
+<footer>
+    <%- include('../partials/footer'); %>
+</footer>
+</body>
+</html>

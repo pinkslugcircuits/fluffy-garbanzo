@@ -1,0 +1,48 @@
+<style>
+    .flex-container {
+      display: flex;
+      flex-direction: row;
+    }
+    
+    .logoBox {
+      width: 30%;
+      text-align: center;
+    }
+  
+    .searchBar{
+      width: 50%;
+      border: 2px solid rgb(175, 175, 175);
+      text-align: center;
+      align-self: flex-end;
+      font-weight: bold;
+    }
+  
+    .logIn{
+      width: 10%;
+      text-align: center;
+      align-self: flex-end;
+      font-weight: bold;
+    }
+
+    .aboutUs{
+      width: 10%;
+      text-align: center;
+      align-self: flex-end;
+      font-weight: bold;
+    }
+
+    .logo {
+      width: 90%;
+      height: 110px;
+    }
+</style>
+<div class="flex-container">
+    <div class="logoBox">
+      <a href="/">
+        <img class="logo" src="../../public/Logo 3_Open Architecture.png" alt="Clickable Image">
+      </a>    
+    </div>
+    <div class="searchBar">Search</div>
+    <div class="logIn">Log In</div>
+    <div class="aboutUs"><a href="/aboutUs" style="text-decoration: none; color: black;" >About Us</a></div>
+</div>

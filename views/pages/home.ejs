@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link href="/public/style.css" rel="stylesheet" type="text/css">
+  <%- include('../partials/head'); %>
+</head>
+<body>
+<header>
+    <%- include('../partials/header'); %>
+</header>
+<div class="topBar">
+  <P>Select with due diligence for human rights.<br>Browse all our building categories and products.</p><br>
+  <button class="button-white" onclick="window.location.href='/categories'">Categories</button>
+  <button class="button-white" onclick="window.location.href='/products'">Products</button>
+</div>
+<div class="homeBody">
+  <div><img src="../../public/Logo 2_Open Architecture.png" style="width:150px;height:150px;"></div>
+  <div>
+    <p>OpenArchitecture is an open-access web based platform designed to support architects,
+      engineers, and construction (AEC) professionals in making socially responsible decisions.
+      By linking blockchain technology with supply chain data and modern slavery statements,
+      we provide transparent, traceable insights into the social provenance of building materials
+      and products. Our goal is to make ethical sourcing simple, visible, and actionable,
+      transforming how the built environment is designed, specified, and delivered for human
+      rights.
+    </p>
+  </div>
+</div>
+
+
+<footer>
+    <%- include('../partials/footer'); %>
+</footer>
+</body>
+</html>
