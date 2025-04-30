@@ -13,8 +13,8 @@ var optionsDB = {
 // Creating object of key and certificate
 // for SSL
 const optionsSSL = {
-    key: fs.readFileSync("server.key"),
-    cert: fs.readFileSync("server.cert"),
+    key: fs.readFileSync("./files/server.key"),
+    cert: fs.readFileSync("./files/server.cert"),
 };
 
 // Creating https server by passing
