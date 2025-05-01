@@ -48,25 +48,27 @@ const editCategory = async (req, res, next) => {
 }
 
 const processEditCategory = async (req, res, next) => {
+  const catId = req.params.id
+  var updateCat = await getCatDataId(catId)
   if (!req.files) {
-    return res.status(400).send('No files were uploaded.')
-  }
-  const file = req.files.catImage
-  const extensionName = path.extname(file.name)
-  const allowedExtension = ['.png', '.jpg', '.jpeg']
-  if (!allowedExtension.includes(extensionName)) {
-    return res.status(422).send('Invalid Image')
-  }
-  const imagePath = './files/category/images/' + file.name
-  file.mv(imagePath, (err) => {
-    if (err) {
-      return res.status(500).send(err)
+  } else if (req.files.catImage) {
+    console.log("Image file found")
+    var file = req.files.catImage
+    var extensionName = path.extname(file.name)
+    var allowedExtension = ['.png', '.jpg', '.jpeg']
+    if (!allowedExtension.includes(extensionName)) {
+      return res.status(422).send('Invalid Image')
     }
-    const catId = req.params.id
-    const categoryName = req.body.catName
-    editCat(catId, categoryName, imagePath)
-    res.redirect(303, '/categories')
-  })
+    updateCat.imagePath = './files/category/images/' + file.name
+    file.mv(updateProd.imagePath, (err) => {
+      if (err) {
+        return res.status(500).send(err)
+      }
+    })
+  }
+  const categoryName = req.body.catName
+  editCat(catId, categoryName, updateCat.imagePath)
+  res.redirect(303, '/categories')
 }
 
 const deleteCategory = async (req, res, next) => {

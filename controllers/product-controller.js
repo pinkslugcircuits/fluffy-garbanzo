@@ -33,43 +33,47 @@ const newProduct = async (req, res, next) => {
 }
 
 const processNewProduct = async (req, res, next) => {
-  if (!req.files) {
+  const prodId = req.params.id
+  var imagePath
+  var mssPath
+  if(!req.files){
     return res.status(400).send('No files were uploaded.')
-  }
-  const file = req.files.prodImage
-  const extensionName = path.extname(file.name)
-  const allowedExtension = ['.png', '.jpg', '.jpeg']
-  if (!allowedExtension.includes(extensionName)) {
-    return res.status(422).send('Invalid Image')
-  }
-  const imagePath = './files/products/images/' + file.name
-  file.mv(imagePath, (err) => {
-    if (err) {
-      return res.status(500).send(err)
-    }
-    const productName = req.body.prodName
-    const company = req.body.prodCompany
-    const description = req.body.prodDescription
-    const categoryName = req.body.category
-
-    const file = req.files.prodMss
-    const extensionName = path.extname(file.name)
-    const allowedExtension = ['.pdf', '.rfa']
+  } else if (req.files.prodImage) {
+    var file = req.files.prodImage
+    var extensionName = path.extname(file.name)
+    var allowedExtension = ['.png', '.jpg', '.jpeg']
     if (!allowedExtension.includes(extensionName)) {
-      return res.status(422).send('Invalid file')
+      return res.status(422).send('Invalid Image')
     }
-    const mssPath = './files/products/mss/' + file.name
+    imagePath = './files/products/images/' + file.name
+    file.mv(imagePath, (err) => {
+      if (err) {
+        return res.status(500).send(err)
+      }
+    })
+  } else if (req.files.prodMss) {
+    console.log("MSS file found")
+    var file = req.files.prodMss
+    var extensionName = path.extname(file.name)
+    var allowedExtension = ['.pdf']
+    if (!allowedExtension.includes(extensionName)) {
+      return res.status(422).send('Invalid file format. pdf only')
+    }
+    mssPath = './files/products/mss/' + file.name
     file.mv(mssPath, (err) => {
       if (err) {
         return res.status(500).send(err)
       }
-      const mssPresent = true
-      const familyPath = 'test path 1'
-
-      createProd(productName, imagePath, company, description, mssPath, mssPresent, familyPath, categoryName)
-      res.redirect(303, '/products')
     })
-  })
+  }
+  const productName = req.body.prodName
+  const company = req.body.prodCompany
+  const description = req.body.prodDescription
+  const categoryName = req.body.category
+  const mssPresent = true
+  const familyPath = 'test path 1'
+  createProd(productName, imagePath, company, description, mssPath, mssPresent, familyPath, categoryName)
+  res.redirect(303, '/products')
 }
 
 const editProduct = async (req, res, next) => {
@@ -83,44 +87,49 @@ const editProduct = async (req, res, next) => {
 }
 
 const processEditProduct = async (req, res, next) => {
-  if (!req.files) {
-    return res.status(400).send('No files were uploaded.')
-  }
-  const file = req.files.prodImage
-  const extensionName = path.extname(file.name)
-  const allowedExtension = ['.png', '.jpg', '.jpeg']
-  if (!allowedExtension.includes(extensionName)) {
-    return res.status(422).send('Invalid Image')
-  }
-  const imagePath = './files/products/images/' + file.name
-  file.mv(imagePath, (err) => {
-    if (err) {
-      return res.status(500).send(err)
-    }
-    const prodId = req.params.id
-    const productName = req.body.prodName
-    const company = req.body.prodCompany
-    const description = req.body.prodDescription
-    const categoryName = req.body.category
-
-    const file = req.files.prodMss
-    const extensionName = path.extname(file.name)
-    const allowedExtension = ['.pdf', '.rfa']
+  const prodId = req.params.id
+  var updateProd = await getProdDataId(prodId)
+  if(!req.files){
+  } else if (req.files.prodImage) {
+    console.log("Image file found")
+    var file = req.files.prodImage
+    var extensionName = path.extname(file.name)
+    var allowedExtension = ['.png', '.jpg', '.jpeg']
     if (!allowedExtension.includes(extensionName)) {
-      return res.status(422).send('Invalid file')
+      return res.status(422).send('Invalid Image')
     }
-    const mssPath = './files/products/mss/' + file.name
-    file.mv(mssPath, (err) => {
+    updateProd.imagePath = './files/products/images/' + file.name
+    file.mv(updateProd.imagePath, (err) => {
       if (err) {
         return res.status(500).send(err)
       }
-      const mssPresent = true
-      const familyPath = 'test path 1'
-      editProd(prodId, productName, imagePath, company, description, mssPath, mssPresent, familyPath, categoryName)
-      res.redirect(303, '/products')
     })
-  })
+  } else if (req.files.prodMss) {
+    console.log("MSS file found")
+    var file = req.files.prodMss
+    var extensionName = path.extname(file.name)
+    var allowedExtension = ['.pdf']
+    if (!allowedExtension.includes(extensionName)) {
+      return res.status(422).send('Invalid file format. pdf only')
+    }
+    updateProd.mssPath = './files/products/mss/' + file.name
+    file.mv(updateProd.mssPath, (err) => {
+      if (err) {
+        return res.status(500).send(err)
+      }
+      updateProd.mssPresent = true
+    })
+  }
+  const productName = req.body.prodName
+  const company = req.body.prodCompany
+  const description = req.body.prodDescription
+  const categoryName = req.body.category
+  const mssPresent = true
+  const familyPath = 'test path 1'
+  editProd(prodId, productName, updateProd.imagePath, company, description, updateProd.mssPath, updateProd.mssPresent, familyPath, categoryName)
+  res.redirect(303, '/products')
 }
+
 
 const deleteProduct = async (req, res, next) => {
   const prodId = req.params.id

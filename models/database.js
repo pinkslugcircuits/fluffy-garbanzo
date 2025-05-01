@@ -17,7 +17,7 @@ const productSchema = new mongoose.Schema({
   imagePath: String,
   company: String,
   description: String,
-  mssPath: String,
+  mssPath: [String],
   mssPresent: Boolean,
   familyPath: String,
   categoryName: String
