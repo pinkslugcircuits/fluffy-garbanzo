@@ -1,7 +1,8 @@
 import passport from 'passport'
 
 const login = async (req, res, next) => {
-    res.render('login', { user: req.user });
+    res.locals.title = 'Log-in'
+    res.render('pages/login', { user: req.user });
 }
 
 const logoutControl = async (req, res) => {

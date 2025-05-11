@@ -207,3 +207,11 @@ span::after {
 
 .drop:checked + .slide {height: auto;} 
 
+.google-btn{
+  color: #fff;
+  text-decoration: none;
+  font-size: 18px;
+  padding: 10px;
+  background: #ff5353;
+}
+

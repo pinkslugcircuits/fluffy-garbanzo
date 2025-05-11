@@ -43,6 +43,12 @@
       </a>    
     </div>
     <div class="searchBar">Search</div>
-    <div class="logIn">Log In</div>
+    <div class="logIn">
+      <% if (user) { %>
+        <a href="/auth/logout"style="text-decoration: none; color: black;">Log out</a>
+      <% } else { %>
+        <a href="/auth/login"style="text-decoration: none; color: black;">Login</a>
+      <% } %>
+    </div>
     <div class="aboutUs"><a href="/aboutUs" style="text-decoration: none; color: black;" >About Us</a></div>
 </div>

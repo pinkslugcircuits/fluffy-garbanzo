@@ -1,5 +1,6 @@
 const profile = async (req, res, next) => {
-    res.send('your logged into your profile');
+    res.locals.title = 'Profile'
+    res.render('pages/profile', { user: req.user })
 }
 
 export {

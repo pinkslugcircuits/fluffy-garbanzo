@@ -56,7 +56,7 @@ app.get('/contactUs', async (req, res) => {
 
 app.get('/', (req, res) => {
     res.locals.title = 'Home'
-    res.render('pages/home')
+    res.render('pages/home', { user: req.user })
 });
 
 export {
