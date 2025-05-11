@@ -8,7 +8,7 @@ const product = async (req, res, next) => {
   const prods = await getProdData()
   res.locals.title = 'Product'
   res.status(200)
-  res.render('pages/products', { prods })
+  res.render('pages/products', { prods, user: req.user })
 }
 
 const productPage = async (req, res, next) => {
@@ -22,14 +22,14 @@ const productPage = async (req, res, next) => {
   } else {
     mss = 'No modern slavery statement issued by company'
   }
-  res.render('pages/product', { prod, mss })
+  res.render('pages/product', { prod, mss, user: req.user })
 }
 
 const newProduct = async (req, res, next) => {
   const cats = await getCatData()
   res.locals.title = 'newProduct'
   res.status(200)
-  res.render('pages/newProduct', { cats })
+  res.render('pages/newProduct', { cats, user: req.user })
 }
 
 const processNewProduct = async (req, res, next) => {
@@ -73,7 +73,7 @@ const processNewProduct = async (req, res, next) => {
   const mssPresent = true
   const familyPath = 'test path 1'
   createProd(productName, imagePath, company, description, mssPath, mssPresent, familyPath, categoryName)
-  res.redirect(303, '/products')
+  res.redirect(303, '/products', { user: req.user })
 }
 
 const editProduct = async (req, res, next) => {
@@ -83,7 +83,7 @@ const editProduct = async (req, res, next) => {
   res.locals.title = 'editProduct'
   res.locals.id = req.params.id
   res.status(200)
-  res.render('pages/editProduct', { prods, cats })
+  res.render('pages/editProduct', { prods, cats, user: req.user })
 }
 
 const processEditProduct = async (req, res, next) => {
@@ -127,14 +127,14 @@ const processEditProduct = async (req, res, next) => {
   const mssPresent = true
   const familyPath = 'test path 1'
   editProd(prodId, productName, updateProd.imagePath, company, description, updateProd.mssPath, updateProd.mssPresent, familyPath, categoryName)
-  res.redirect(303, '/products')
+  res.redirect(303, '/products', { user: req.user })
 }
 
 
 const deleteProduct = async (req, res, next) => {
   const prodId = req.params.id
   deleteProd(prodId)
-  res.redirect(303, '/products')
+  res.redirect(303, '/products', { user: req.user })
 }
 
 // -- API --

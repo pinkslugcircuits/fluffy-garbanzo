@@ -46,12 +46,12 @@ app.use('/api/v1/products', productAPIRoute)
 
 app.get('/aboutUs', async (req, res) => {
     res.locals.title = 'About Us'
-    res.render('pages/aboutUs')
+    res.render('pages/aboutUs', { user: req.user })
 })
 
 app.get('/contactUs', async (req, res) => {
     res.locals.title = 'Contact Us'
-    res.render('pages/contactUs')
+    res.render('pages/contactUs', { user: req.user })
 })
 
 app.get('/', (req, res) => {

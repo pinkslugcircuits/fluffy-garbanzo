@@ -8,7 +8,7 @@ const login = async (req, res, next) => {
 const logoutControl = async (req, res) => {
     req.logout(function(err) {
         if (err) { return next(err); }
-        res.redirect('/');
+        res.redirect('/', { user: req.user });
     })
 }
 

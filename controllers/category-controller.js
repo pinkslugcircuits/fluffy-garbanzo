@@ -8,13 +8,13 @@ const category = async (req, res, next) => {
   const cats = await getCatData()
   res.locals.title = 'Categories'
   res.status(200)
-  res.render('pages/categories', { cats })
+  res.render('pages/categories', { cats, user: req.user })
 }
 
 const newCategory = async (req, res, next) => {
   res.locals.title = 'newCategory'
   res.status(200)
-  res.render('pages/newCategory')
+  res.render('pages/newCategory', { user: req.user })
 }
 
 const processNewCategory = async (req, res, next) => {
@@ -34,7 +34,7 @@ const processNewCategory = async (req, res, next) => {
     }
     const categoryName = req.body.catName
     createCat(categoryName, imagePath)
-    res.redirect(303, '/categories')
+    res.redirect(303, '/categories', { user: req.user })
   })
 }
 
@@ -44,7 +44,7 @@ const editCategory = async (req, res, next) => {
   res.locals.title = 'editCategory'
   res.locals.id = req.params.id
   res.status(200)
-  res.render('pages/editCategory', { cats })
+  res.render('pages/editCategory', { cats, user: req.user })
 }
 
 const processEditCategory = async (req, res, next) => {
@@ -68,13 +68,13 @@ const processEditCategory = async (req, res, next) => {
   }
   const categoryName = req.body.catName
   editCat(catId, categoryName, updateCat.imagePath)
-  res.redirect(303, '/categories')
+  res.redirect(303, '/categories', { user: req.user })
 }
 
 const deleteCategory = async (req, res, next) => {
   const catId = req.params.id
   deleteCat(catId)
-  res.redirect(303, '/categories')
+  res.redirect(303, '/categories', { user: req.user })
 }
 
 const showCategory = async (req, res, next) => {
@@ -82,7 +82,7 @@ const showCategory = async (req, res, next) => {
   const cats = await getCatDataId(catId)
   const prods = await getProdData()
   res.locals.title = 'doors'
-  res.render('pages/category', { cats, prods })
+  res.render('pages/category', { cats, prods, user: req.user })
 }
 
 // -- API --
