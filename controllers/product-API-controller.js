@@ -43,6 +43,7 @@ const updateOneProduct = async (req, res, next) => {
 
 const deleteOneProduct = async (req, res, next) => {
   const id = req.params.id
+  console.log(id)
   const storedProduct = await getProductById(id)
   if (!storedProduct) {
     res.sendStatus(404)

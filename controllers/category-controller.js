@@ -60,7 +60,7 @@ const processEditCategory = async (req, res, next) => {
       return res.status(422).send('Invalid Image')
     }
     updateCat.imagePath = './files/category/images/' + file.name
-    file.mv(updateProd.imagePath, (err) => {
+    file.mv(updateCat.imagePath, (err) => {
       if (err) {
         return res.status(500).send(err)
       }
@@ -68,7 +68,7 @@ const processEditCategory = async (req, res, next) => {
   }
   const categoryName = req.body.catName
   editCat(catId, categoryName, updateCat.imagePath)
-  res.redirect(303, '/categories', { user: req.user })
+  res.redirect(303, '/categories')
 }
 
 const deleteCategory = async (req, res, next) => {

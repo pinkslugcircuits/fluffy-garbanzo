@@ -14,7 +14,6 @@ const product = async (req, res, next) => {
 const productPage = async (req, res, next) => {
   const prodId = req.params.id
   const prod = await getProdDataId(prodId)
-  console.log(prod)
   res.locals.title = 'Product'
   res.status(200)
   let mss = ''
@@ -51,33 +50,41 @@ const processNewProduct = async (req, res, next) => {
         return res.status(500).send(err)
       }
     })
-  } else if (req.files.prodMss) {
-    console.log("MSS file found")
+  }
+  if (req.files.prodMss) {
+    console.log("mss file found")
     var file = req.files.prodMss
     var extensionName = path.extname(file.name)
+    console.log(extensionName)
     var allowedExtension = ['.pdf']
     if (!allowedExtension.includes(extensionName)) {
       return res.status(422).send('Invalid file format. pdf only')
     }
-    mssPath = '../files/products/mss/' + file.name
+    mssPath = './files/products/mss/' + file.name
+    console.log(mssPath)
     file.mv(mssPath, (err) => {
       if (err) {
         return res.status(500).send(err)
       }
     })
   }
+  console.log(mssPath)
+  console.log(imagePath)
   const productName = req.body.prodName
   const company = req.body.prodCompany
   const description = req.body.prodDescription
   const categoryName = req.body.category
   const mssPresent = true
   const familyPath = 'test path 1'
-  const result = createProd(productName, imagePath, company, description, mssPath, mssPresent, familyPath, categoryName)
+  const result = await createProd(productName, imagePath, company, description, mssPath, mssPresent, familyPath, categoryName)
+  console.log(result)
   res.redirect('/products', { id:result.id }, { user: req.user })
 }
 
 const editProduct = async (req, res, next) => {
   const prodId = req.params.id
+  console.log("editProduct")
+  console.log(prodId)
   const prods = await getProdDataId(prodId)
   const cats = await getCatData()
   res.locals.title = 'editProduct'
@@ -88,6 +95,8 @@ const editProduct = async (req, res, next) => {
 
 const processEditProduct = async (req, res, next) => {
   const prodId = req.params.id
+  console.log("processEdit")
+  console.log(prodId)
   var updateProd = await getProdDataId(prodId)
   if(!req.files){
   } else if (req.files.prodImage) {
@@ -127,14 +136,14 @@ const processEditProduct = async (req, res, next) => {
   const mssPresent = true
   const familyPath = 'test path 1'
   editProd(prodId, productName, updateProd.imagePath, company, description, updateProd.mssPath, updateProd.mssPresent, familyPath, categoryName)
-  res.redirect(303, 'pages/products', { user: req.user })
+  res.redirect(303, '/products')
 }
 
 
 const deleteProduct = async (req, res, next) => {
   const prodId = req.params.id
   deleteProd(prodId)
-  res.redirect(303, 'pages/products', { user: req.user })
+  res.redirect(303, '/products')
 }
 
 // -- API --
@@ -214,6 +223,7 @@ async function deleteProd (prodId) {
       throw new Error(`Error! status: ${response.status}`)
     }
     const result = await response.json()
+    console.log(result)
     return result
   } catch (err) {
     console.log(err)
