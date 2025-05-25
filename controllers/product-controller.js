@@ -14,6 +14,7 @@ const product = async (req, res, next) => {
 const productPage = async (req, res, next) => {
   const prodId = req.params.id
   const prod = await getProdDataId(prodId)
+  console.log(prod)
   res.locals.title = 'Product'
   res.status(200)
   let mss = ''
@@ -33,7 +34,6 @@ const newProduct = async (req, res, next) => {
 }
 
 const processNewProduct = async (req, res, next) => {
-  const prodId = req.params.id
   var imagePath
   var mssPath
   if(!req.files){
@@ -59,7 +59,7 @@ const processNewProduct = async (req, res, next) => {
     if (!allowedExtension.includes(extensionName)) {
       return res.status(422).send('Invalid file format. pdf only')
     }
-    mssPath = './files/products/mss/' + file.name
+    mssPath = '../files/products/mss/' + file.name
     file.mv(mssPath, (err) => {
       if (err) {
         return res.status(500).send(err)
@@ -72,8 +72,8 @@ const processNewProduct = async (req, res, next) => {
   const categoryName = req.body.category
   const mssPresent = true
   const familyPath = 'test path 1'
-  createProd(productName, imagePath, company, description, mssPath, mssPresent, familyPath, categoryName)
-  res.redirect(303, '/products', { user: req.user })
+  const result = createProd(productName, imagePath, company, description, mssPath, mssPresent, familyPath, categoryName)
+  res.redirect('/products', { id:result.id }, { user: req.user })
 }
 
 const editProduct = async (req, res, next) => {
@@ -127,14 +127,14 @@ const processEditProduct = async (req, res, next) => {
   const mssPresent = true
   const familyPath = 'test path 1'
   editProd(prodId, productName, updateProd.imagePath, company, description, updateProd.mssPath, updateProd.mssPresent, familyPath, categoryName)
-  res.redirect(303, '/products', { user: req.user })
+  res.redirect(303, 'pages/products', { user: req.user })
 }
 
 
 const deleteProduct = async (req, res, next) => {
   const prodId = req.params.id
   deleteProd(prodId)
-  res.redirect(303, '/products', { user: req.user })
+  res.redirect(303, 'pages/products', { user: req.user })
 }
 
 // -- API --

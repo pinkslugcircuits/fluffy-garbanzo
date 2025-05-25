@@ -33,8 +33,8 @@ const processNewCategory = async (req, res, next) => {
       return res.status(500).send(err)
     }
     const categoryName = req.body.catName
-    createCat(categoryName, imagePath)
-    res.redirect(303, '/categories', { user: req.user })
+    const result = createCat(categoryName, imagePath)
+    res.redirect('/categories', { id:result.id }, { user: req.user })
   })
 }
 
