@@ -9,6 +9,8 @@ import bodyParser from 'body-parser'
 const utf8Decoder = new TextDecoder();
 
 const mspId = envOrDefault('MSP_ID', 'Org1MSP');
+const channelName = envOrDefault('CHANNEL_NAME', 'mychannel');
+const chaincodeName = envOrDefault('CHAINCODE_NAME', 'basic');
 
 // Path to crypto materials.
 const cryptoPath = envOrDefault(
@@ -71,8 +73,8 @@ const addUser = async (req, res, next) => {
     });
 
     try {
-        const network = gateway.getNetwork('mychannel');
-        const contract = network.getContract('basic');
+        const network = gateway.getNetwork(channelName);
+        const contract = network.getContract(chaincodeName);
 
         const putResult = await contract.submitTransaction('InitLedger');
         console.log('Put result:', utf8Decoder.decode(putResult));
@@ -100,8 +102,8 @@ const getBlocks = async (req, res, next) => {
     });
 
     try {
-        const network = gateway.getNetwork('mychannel');
-        const contract = network.getContract('basic');
+        const network = gateway.getNetwork(channelName);
+        const contract = network.getContract(chaincodeName);
 
         console.log('get all')
         block = await contract.evaluateTransaction('GetAllAssets');
@@ -130,8 +132,8 @@ const getBlock = async (req, res, next) => {
     });
 
     try {
-        const network = gateway.getNetwork('mychannel');
-        const contract = network.getContract('basic');
+        const network = gateway.getNetwork(channelName);
+        const contract = network.getContract(chaincodeName);
 
         console.log('get one')
         block = await contract.evaluateTransaction('ReadAsset', Id);
