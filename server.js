@@ -14,6 +14,7 @@ import { categoryRoute } from './routes/category-routes.js'
 import { categoryAPIRoute } from './routes/category-API-routes.js'
 import { productRoute } from './routes/product-routes.js'
 import { productAPIRoute } from './routes/product-API-routes.js'
+import { hyperLedger } from './routes/hyperLedger-routes.js'
 
 //server setup
 const app = express()
@@ -40,6 +41,7 @@ app.use('/auth', authRoutes)
 app.use('/profile', profRoutes)
 app.use('/categories', categoryRoute)
 app.use('/products', productRoute)
+app.use('/hyperLedger', hyperLedger)
 
 app.use('/api/v1/categories', categoryAPIRoute)
 app.use('/api/v1/products', productAPIRoute)

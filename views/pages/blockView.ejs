@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link href="/public/style.css" rel="stylesheet" type="text/css">
+  <%- include('../partials/head'); %>
+</head>
+<body>
+<header>
+    <%- include('../partials/header'); %>
+</header>
+<div class="topBar">
+    <p>block</p>
+</div>
+    <% for(var key in result) { %>
+        <%= key + ": " + result[key]  %><br>
+    <% } %>
+<footer>
+    <%- include('../partials/footer'); %>
+</footer>
+</body>
+</html>

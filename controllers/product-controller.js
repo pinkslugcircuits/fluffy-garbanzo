@@ -95,8 +95,6 @@ const editProduct = async (req, res, next) => {
 
 const processEditProduct = async (req, res, next) => {
   const prodId = req.params.id
-  console.log("processEdit")
-  console.log(prodId)
   var updateProd = await getProdDataId(prodId)
   if(!req.files){
   } else if (req.files.prodImage) {
@@ -142,7 +140,7 @@ const processEditProduct = async (req, res, next) => {
 
 const deleteProduct = async (req, res, next) => {
   const prodId = req.params.id
-  deleteProd(prodId)
+  await deleteProd(prodId)
   res.redirect(303, '/products')
 }
 
