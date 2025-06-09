@@ -76,15 +76,14 @@ const processNewProduct = async (req, res, next) => {
   const categoryName = req.body.category
   const mssPresent = true
   const familyPath = 'test path 1'
-  const result = await createProd(productName, imagePath, company, description, mssPath, mssPresent, familyPath, categoryName)
+  const prodBlock = req.body.prodBlock
+  const result = await createProd(productName, imagePath, company, description, mssPath, mssPresent, familyPath, categoryName, prodBlock)
   console.log(result)
   res.redirect('/products', { id:result.id }, { user: req.user })
 }
 
 const editProduct = async (req, res, next) => {
   const prodId = req.params.id
-  console.log("editProduct")
-  console.log(prodId)
   const prods = await getProdDataId(prodId)
   const cats = await getCatData()
   res.locals.title = 'editProduct'
@@ -133,7 +132,8 @@ const processEditProduct = async (req, res, next) => {
   const categoryName = req.body.category
   const mssPresent = true
   const familyPath = 'test path 1'
-  editProd(prodId, productName, updateProd.imagePath, company, description, updateProd.mssPath, updateProd.mssPresent, familyPath, categoryName)
+  const prodBlock = req.body.prodBlock
+  editProd(prodId, productName, updateProd.imagePath, company, description, updateProd.mssPath, updateProd.mssPresent, familyPath, categoryName, prodBlock)
   res.redirect(303, '/products')
 }
 
@@ -171,14 +171,14 @@ async function getProdDataId (prodId) {
   }
 }
 
-async function createProd (productName, imagePath, company, description, mssPath, mssPresent, familyPath, categoryName) {
+async function createProd (productName, imagePath, company, description, mssPath, mssPresent, familyPath, categoryName, prodBlock) {
   try {
     const response = await fetch(url, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ productName, imagePath, company, description, mssPath, mssPresent, familyPath, categoryName })
+      body: JSON.stringify({ productName, imagePath, company, description, mssPath, mssPresent, familyPath, categoryName, prodBlock })
     })
     if (!response.ok) {
       throw new Error(`Error! status: ${response.status}`)
@@ -190,14 +190,14 @@ async function createProd (productName, imagePath, company, description, mssPath
   }
 }
 
-async function editProd (prodId, productName, imagePath, company, description, mssPath, mssPresent, familyPath, categoryName) {
+async function editProd (prodId, productName, imagePath, company, description, mssPath, mssPresent, familyPath, categoryName, prodBlock) {
   try {
     const response = await fetch(url + `/${prodId}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ productName, imagePath, company, description, mssPath, mssPresent, familyPath, categoryName })
+      body: JSON.stringify({ productName, imagePath, company, description, mssPath, mssPresent, familyPath, categoryName, prodBlock })
     })
     if (!response.ok) {
       throw new Error(`Error! status: ${response.status}`)

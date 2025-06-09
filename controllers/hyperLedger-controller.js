@@ -5,6 +5,9 @@ import { promises as fs } from 'node:fs'
 import { TextDecoder } from 'node:util'
 import path from 'node:path'
 import bodyParser from 'body-parser'
+const port = process.env.PORT
+process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = 0
+const url = 'https://0.0.0.0:' + port + '/api/v1/products'
 
 const utf8Decoder = new TextDecoder();
 
@@ -62,6 +65,7 @@ const peerEndpoint = envOrDefault('PEER_ENDPOINT', 'localhost:7051');
 // Gateway peer SSL host name override.
 const peerHostAlias = envOrDefault('PEER_HOST_ALIAS', 'peer0.org1.example.com');
 
+//Calls
 const addUser = async (req, res, next) => { 
     const client = await newGrpcConnection()
 
@@ -148,6 +152,42 @@ const getBlock = async (req, res, next) => {
     res.render('pages/blockView', { user: req.user, result })
 }
 
+const changeOwner = async (req, res, next) => { 
+    const prodId = req.params.id
+    const prod = await getProdDataId(prodId)
+    console.log(prod)
+    const Id = prod.prodBlock
+    console.log(Id)
+    const client = await newGrpcConnection()
+    var block
+
+    const gateway = connect({
+        identity: await newIdentity(),
+        signer: await newSigner(),
+        hash: hash.sha256,
+        client,
+    });
+
+    try {
+        const network = gateway.getNetwork(channelName);
+        const contract = network.getContract(chaincodeName);
+
+        console.log('get one')
+        block = await contract.submitTransaction('TransferAsset', Id, 'fleetwood');
+    } finally {
+        gateway.close();
+        client.close();
+    }
+    const result = utf8Decoder.decode(block)
+    console.log(result)
+    res.locals.title = 'Hyperledger-AddUser'
+    res.status(200)
+    res.send(result)
+}
+
+
+//Functions
+
 async function newGrpcConnection() {
     const tlsRootCert = await fs.readFile(tlsCertPath);
     const tlsCredentials = grpc.credentials.createSsl(tlsRootCert);
@@ -182,8 +222,22 @@ function envOrDefault(key, defaultValue) {
     return process.env[key] || defaultValue;
 }
 
+async function getProdDataId (prodId) {
+  try {
+    const response = await fetch(url + `/${prodId}`)
+    if (!response.ok) {
+      throw new Error(`Error! status: ${response.status}`)
+    }
+    const result = await response.json()
+    return result
+  } catch (err) {
+    console.log(err)
+  }
+}
+
 export {
   addUser,
   getBlock,
-  getBlocks
+  getBlocks,
+  changeOwner
 }

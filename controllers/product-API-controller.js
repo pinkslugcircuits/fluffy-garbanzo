@@ -16,17 +16,17 @@ const getOneProduct = async (req, res, next) => {
 }
 
 const newProduct = async (req, res, next) => {
-  const { productName, imagePath, company, description, mssPath, mssPresent, familyPath, categoryName } = req.body
+  const { productName, imagePath, company, description, mssPath, mssPresent, familyPath, categoryName, prodBlock } = req.body
   if (!productName) {
     res.sendStatus(400)
     return
   }
-  const newProduct = await createProduct(productName, imagePath, company, description, mssPath, mssPresent, familyPath, categoryName)
+  const newProduct = await createProduct(productName, imagePath, company, description, mssPath, mssPresent, familyPath, categoryName, prodBlock)
   res.status(201).json(newProduct)
 }
 
 const updateOneProduct = async (req, res, next) => {
-  const { productName, imagePath, company, description, mssPath, mssPresent, familyPath, categoryName } = req.body
+  const { productName, imagePath, company, description, mssPath, mssPresent, familyPath, categoryName, prodBlock } = req.body
   const id = req.params.id
   if (!productName) {
     res.sendStatus(400)
@@ -37,7 +37,7 @@ const updateOneProduct = async (req, res, next) => {
     res.sendStatus(404)
     return
   }
-  await updateProductById(id, productName, imagePath, company, description, mssPath, mssPresent, familyPath, categoryName, categoryName)
+  await updateProductById(id, productName, imagePath, company, description, mssPath, mssPresent, familyPath, categoryName,  prodBlock)
   res.status(200)
 }
 
