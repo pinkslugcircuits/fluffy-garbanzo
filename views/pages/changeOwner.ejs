@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link href="/public/style.css" rel="stylesheet" type="text/css">
+  <%- include('../partials/head'); %>
+</head>
+<body>
+<header>
+    <%- include('../partials/header'); %>
+</header>
+<form action="/hyperLedger/changeOwner/<%= prod.id %>" method="POST" enctype="multipart/form-data">
+    <div>
+        <label for="blockOwner">Product Owner:</label>
+        <input type="text" id="blockOwner" name="blockOwner" value="<%= block.Owner %>" required>
+        <label for="catId">Product ID:</label>
+        <input type="text" id="prodId" value=<%= prod.id %> readonly><br>
+    </div>
+    <div>
+        <button type="submit">Submit</button>
+    </div>
+</form>
+<footer>
+    <%- include('../partials/footer'); %>
+</footer>
+</body>
+</html>

@@ -15,6 +15,7 @@ import { categoryAPIRoute } from './routes/category-API-routes.js'
 import { productRoute } from './routes/product-routes.js'
 import { productAPIRoute } from './routes/product-API-routes.js'
 import { hyperLedger } from './routes/hyperLedger-routes.js'
+import { hyperLedgerAPIRoute } from './routes/hyperLedger-API-routes.js'
 
 //server setup
 const app = express()
@@ -45,6 +46,7 @@ app.use('/hyperLedger', hyperLedger)
 
 app.use('/api/v1/categories', categoryAPIRoute)
 app.use('/api/v1/products', productAPIRoute)
+app.use('/api/v1/hyperLedger', hyperLedgerAPIRoute)
 
 app.get('/aboutUs', async (req, res) => {
     res.locals.title = 'About Us'

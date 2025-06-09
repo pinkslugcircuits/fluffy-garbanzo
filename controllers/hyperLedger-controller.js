@@ -8,6 +8,7 @@ import bodyParser from 'body-parser'
 const port = process.env.PORT
 process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = 0
 const url = 'https://0.0.0.0:' + port + '/api/v1/products'
+const url3 = 'https://0.0.0.0:' + port + '/api/v1/hyperLedger'
 
 const utf8Decoder = new TextDecoder();
 
@@ -124,7 +125,6 @@ const getBlocks = async (req, res, next) => {
 
 const getBlock = async (req, res, next) => { 
     const Id = req.params.id
-    console.log(Id)
     const client = await newGrpcConnection()
     var block
 
@@ -155,11 +155,21 @@ const getBlock = async (req, res, next) => {
 const changeOwner = async (req, res, next) => { 
     const prodId = req.params.id
     const prod = await getProdDataId(prodId)
-    console.log(prod)
-    const Id = prod.prodBlock
-    console.log(Id)
+    const blockId = prod.prodBlock
+    const block = await getBlockData(blockId)
+    res.locals.title = 'change owner'
+    res.locals.id = req.params.id
+    res.status(200)
+    res.render('pages/changeOwner', { prod, block, user: req.user })
+}
+
+const processChangeOwner = async (req, res, next) => { 
+    const prodId = req.params.id
+    const prod = await getProdDataId(prodId)
+    const blockId = prod.prodBlock
+    const block = await getBlockData(blockId)
     const client = await newGrpcConnection()
-    var block
+    var blockReturn
 
     const gateway = connect({
         identity: await newIdentity(),
@@ -172,17 +182,14 @@ const changeOwner = async (req, res, next) => {
         const network = gateway.getNetwork(channelName);
         const contract = network.getContract(chaincodeName);
 
-        console.log('get one')
-        block = await contract.submitTransaction('TransferAsset', Id, 'fleetwood');
+        blockReturn = await contract.submitTransaction('TransferAsset', block.ID, req.body.blockOwner);
     } finally {
         gateway.close();
         client.close();
     }
-    const result = utf8Decoder.decode(block)
-    console.log(result)
+    const result = utf8Decoder.decode(blockReturn)
     res.locals.title = 'Hyperledger-AddUser'
-    res.status(200)
-    res.send(result)
+    res.redirect(303, '/products')
 }
 
 
@@ -235,9 +242,29 @@ async function getProdDataId (prodId) {
   }
 }
 
+async function getBlockData (blockId) {
+  try {
+    const response = await fetch(url3 + '/getBlock' + `/${blockId}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    if (!response.ok) {
+      throw new Error(`Error! status: ${response.status}`)
+    }
+    const result = await response.json()
+    console.log(result)
+    return result
+  } catch (err) {
+    console.log(err)
+  }
+}
+
 export {
   addUser,
   getBlock,
   getBlocks,
-  changeOwner
+  changeOwner,
+  processChangeOwner
 }
