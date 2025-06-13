@@ -11,9 +11,10 @@
 <div class="topBar">
     <p>block</p>
 </div>
-    <% for(var key in result) { %>
-        <%= key + ": " + result[key]  %><br>
+    <% for (let i = 0; i < result.length; i++) { %>
+        <%= result[i].JSON %>
     <% } %>
+    <%= result %>
 <footer>
     <%- include('../partials/footer'); %>
 </footer>

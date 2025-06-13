@@ -125,6 +125,7 @@ const getBlocks = async (req, res, next) => {
 
 const getBlock = async (req, res, next) => { 
     const Id = req.params.id
+    console.log(Id)
     const client = await newGrpcConnection()
     var block
 
@@ -140,16 +141,16 @@ const getBlock = async (req, res, next) => {
         const contract = network.getContract(chaincodeName);
 
         console.log('get one')
-        block = await contract.evaluateTransaction('ReadAsset', Id);
+        block = await contract.evaluateTransaction('ReadAssetHistory', Id, "true");
     } finally {
         gateway.close();
         client.close();
     }
-    const result = JSON.parse(utf8Decoder.decode(block))
+    const result = utf8Decoder.decode(block)
     console.log(result)
     res.locals.title = 'Hyperledger-AddUser'
     res.status(200)
-    res.render('pages/blockView', { user: req.user, result })
+    res.render('pages/blockView', { result, user: req.user })
 }
 
 const changeOwner = async (req, res, next) => { 
